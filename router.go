@@ -22,5 +22,6 @@ func init() {
 }
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(http.StatusNotFound)
     fmt.Fprintf(w, "Invalid Request")
 }
