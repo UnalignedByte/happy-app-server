@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 BIN_NAME="happy-app-server.fcgi"
 INSTALL_DIR="${GOPATH}/bin"
 
@@ -13,5 +14,6 @@ if [ ! -d "${INSTALL_DIR}" ]; then
     exit
 fi
 
+go get -u
 go build -o "${BIN_NAME}"
 mv "${BIN_NAME}" "${INSTALL_DIR}"
