@@ -8,31 +8,30 @@ import "flag"
 import "strconv"
 import "errors"
 
-var isUsingFastCGI = flag.Bool("fcgi", false, "Should run in FastCGI mode?")
-var nonFastCGIPort = flag.Int("no-fcgi", 80, "TCP port to use in non FastCGI mode")
+var nonFastCGIPort = flag.Int("port", 0, "TCP port to use in non FastCGI mode")
 
 
 func main() {
     parseArguments()
 
-    if *isUsingFastCGI {
-        startFastCGI()
-    } else {
+    if *nonFastCGIPort > 0 {
         start(*nonFastCGIPort)
+    } else {
+        startFastCGI()
     }
 }
 
 func parseArguments() {
     flag.Parse()
 
-    if !*isUsingFastCGI && len(os.Args) > 1 {
+    if len(os.Args) > 1 {
         port, err := strconv.Atoi(os.Args[1])
         if err == nil {
             *nonFastCGIPort = port
         }
     }
 
-    if !*isUsingFastCGI && *nonFastCGIPort < 1 {
+    if *nonFastCGIPort < 0 {
         checkError(errors.New("Invalid port number"))
     }
 }
